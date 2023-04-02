@@ -29,14 +29,12 @@ fn build_ui(app: &Application) {
                     switch_child.connect_state_notify(clone!(
                         @weak right_val, @weak left_val =>
                             move |switch_child| {
-                                if num == 0 {
-                                    left_val.set(switch_child.state());
-                                } else if num == 1 {
-                                    right_val.set(switch_child.state());
+                                match num {
+                                    0 => left_val.set(switch_child.state()),
+                                    1 => right_val.set(switch_child.state()),
+                                    _ => ()
                                 }
-                            }
-                        )
-                    );
+                            ));
                     switch_child
                 })
                 .collect();
