@@ -1,3 +1,4 @@
+use glib::clone;
 use gtk::{
     prelude::{ApplicationExt, ApplicationExtManual},
     traits::{BoxExt, GtkWindowExt, WidgetExt},
@@ -16,7 +17,15 @@ fn build_ui(app: &Application) {
     let operator_choose = DropDown::from_strings(&["AND", "OR"]);
     let gtk_box: Vec<gtk::Box> = (0..1)
         .map(|_| {
-            let switch: Vec<Switch> = (0..3).map(|_| Switch::new()).collect();
+            let switch: Vec<Switch> = (0..3)
+                .map(|_| {
+                    let switch_child = Switch::new();
+                    switch_child.connect_state_notify(clone!(@weak switch_child => move |s| {
+                     println!("{}", s.state())
+                    }));
+                    switch_child
+                })
+                .collect();
             let boxs = gtk::Box::builder()
                 .orientation(gtk::Orientation::Horizontal)
                 .build();
