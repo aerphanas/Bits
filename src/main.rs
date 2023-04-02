@@ -1,5 +1,6 @@
 use std::{cell::Cell, rc::Rc};
 
+use glib::clone;
 use gtk::{
     prelude::{ApplicationExt, ApplicationExtManual},
     traits::{BoxExt, ButtonExt, GtkWindowExt, WidgetExt},
@@ -25,31 +26,31 @@ fn build_ui(app: &Application) {
             let switch: Vec<Switch> = (0..3)
                 .map(|num| {
                     let switch_child = Switch::new();
-                    let left_val_clone = left_val.clone();
-                    let right_val_clone = right_val.clone();
-                    switch_child.connect_state_notify(move |switch_child| {
-                        if num == 0 {
-                            left_val_clone.set(switch_child.state());
-                        } else if num == 1 {
-                            right_val_clone.set(switch_child.state());
-                        } else if num == 2 {
-                            let third_switch_state = left_val_clone.get() && right_val_clone.get();
-                            switch_child.set_state(third_switch_state);
-                        }
-                    });
+                    switch_child.connect_state_notify(clone!(
+                        @weak right_val, @weak left_val =>
+                            move |switch_child| {
+                                if num == 0 {
+                                    left_val.set(switch_child.state());
+                                } else if num == 1 {
+                                    right_val.set(switch_child.state());
+                                }
+                            }
+                        )
+                    );
                     switch_child
                 })
                 .collect();
 
-            let left_val_clone = left_val.clone();
-            let right_val_clone = right_val.clone();
-            let switch_clone = switch.clone();
-            button_ressult.connect_clicked(move |_| {
-                switch_clone
-                    .last()
-                    .unwrap()
-                    .set_state(left_val_clone.get() && right_val_clone.get())
-            });
+            button_ressult.connect_clicked(clone!(
+                @strong right_val, @strong left_val, @strong switch =>
+                    move |_| {
+                        switch
+                            .last()
+                            .unwrap()
+                            .set_state(left_val.get() && right_val.get())
+                    }
+                ),
+            );
             let boxs = gtk::Box::builder()
                 .orientation(gtk::Orientation::Horizontal)
                 .build();
