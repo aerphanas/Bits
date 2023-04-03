@@ -51,7 +51,7 @@ fn build_ui(app: &Application) {
                         switch
                             .last()
                             .unwrap()
-                            .set_state(result)
+                            .set_active(result)
                     }
                 ),
             );
