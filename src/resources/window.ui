@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="BitsAppWindow" parent="GtkApplicationWindow">
+    <property name="title">Bits</property>
+    <property name="default-width">160</property>
+    <style><class name="devel"/></style>
+    <child>
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <property name="margin-start">10</property>
+        <property name="margin-end">10</property>
+        <property name="margin-top">10</property>
+        <property name="margin-bottom">10</property>
+
+	  <child>
+            <object class="GtkDropDown" id="drop_down_option">
+              <property name="model">
+		<object class="GtkStringList">
+		  <items>
+		    <item>AND</item>
+		    <item>OR</item>
+		    <item>XOR</item>
+		  </items>
+		</object>
+              </property>
+            </object>
+          </child>
+
+          <child>
+	    <object class="GtkButton" id="calculate_button">
+	      <property name="label">Calculate</property>
+	    </object>
+	  </child>
+
+	  <child>
+	    <object class="GtkBox">
+	      <property name="orientation">horizontal</property>
+
+	        <child>
+		  <object class="GtkSwitch" id="left_switch">
+		  </object>
+		</child>
+
+		<child>
+		  <object class="GtkSwitch" id="right_switch">
+		  </object>
+		</child>
+
+		<child>
+		  <object class="GtkSwitch" id="result_switch">
+		    <property name="sensitive">false</property>
+		  </object>
+		</child>
+
+	    </object>
+	  </child>
+
+      </object>
+    </child>
+  </template>
+</interface>
