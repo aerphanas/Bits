@@ -60,9 +60,8 @@ impl ObjectImpl for Window {
         self.calculate_button.connect_clicked(clone!(
             @strong right_val,
             @strong left_val,
-            @strong operator_choose,
-            @strong ress_switch,
-            @weak self as window => move |_| {
+            @weak operator_choose,
+            @weak ress_switch => move |_| {
                 let result = match operator_choose.selected() {
                     0 => right_val.get() && left_val.get(),
                     1 => right_val.get() || left_val.get(),
@@ -70,9 +69,6 @@ impl ObjectImpl for Window {
                     _ => false
                 };
                 ress_switch.set_active(result);
-                println!("{}", operator_choose.selected());
-                println!("{}", left_val.get());
-                println!("{}", right_val.get());
             }
         ));
 
