@@ -1,10 +1,11 @@
-use std::{cell::Cell, rc::Rc};
-use glib::clone;
 use gtk::{
+    glib,
+    glib::clone,
     prelude::{ApplicationExt, ApplicationExtManual},
     traits::{BoxExt, ButtonExt, GtkWindowExt, WidgetExt},
     Application, ApplicationWindow, Button, DropDown, Switch,
 };
+use std::{cell::Cell, rc::Rc};
 
 const APP_ID: &str = "io.github.aerphanas";
 
@@ -25,16 +26,14 @@ fn build_ui(app: &Application) {
             let switch: Vec<Switch> = (0..3)
                 .map(|num| {
                     let switch_child = Switch::new();
-                    switch_child.connect_state_notify(
-                        clone!(@weak right_val, @weak left_val =>
-                            move |switch_child| {
-                                match num {
-                                    0 => left_val.set(switch_child.state()),
-                                    1 => right_val.set(switch_child.state()),
-                                    _ => ()
-                                }
-                            })
-                        );
+                    switch_child.connect_state_notify(clone!(@weak right_val, @weak left_val =>
+                    move |switch_child| {
+                        match num {
+                            0 => left_val.set(switch_child.state()),
+                            1 => right_val.set(switch_child.state()),
+                            _ => ()
+                        }
+                    }));
                     switch_child
                 })
                 .collect();
@@ -85,4 +84,3 @@ fn build_ui(app: &Application) {
 
     window.present();
 }
-
