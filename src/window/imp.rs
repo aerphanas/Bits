@@ -61,7 +61,7 @@ impl ObjectImpl for Window {
             @strong right_val,
             @strong left_val,
             @strong operator_choose,
-        @strong ress_switch,
+            @strong ress_switch,
             @weak self as window => move |_| {
                 let result = match operator_choose.selected() {
                     0 => right_val.get() && left_val.get(),
